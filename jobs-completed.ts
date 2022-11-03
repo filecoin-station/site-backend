@@ -1,6 +1,11 @@
-import { serve } from "https://deno.land/std@0.161.0/http/server.ts";
+import { Application, Context } from "https://deno.land/x/oak@v11.1.0/mod.ts";
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 
-serve(async (req: Request) => {
+const app = new Application();
+
+app.use(oakCors());
+
+app.use(async (ctx: Context) => {
   const res = await fetch("https://eu-central-1-1.aws.cloud2.influxdata.com/api/v2/query", {
     method: "POST",
     headers: {
@@ -17,7 +22,9 @@ serve(async (req: Request) => {
     `,
   })
   const body = await res.text()
-  return Response.json({
+  ctx.response.body = {
     jobsCompleted: Number(body.split('\n')[1].split(',')[5])
-  })
+  }
 });
+
+app.listen({ port: 8000 });
