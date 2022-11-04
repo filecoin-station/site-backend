@@ -12,9 +12,14 @@ app.use(async (ctx: Context) => {
     },
   })
   const body = await res.json()
-  ctx.response.body = {
-    downloads: Number(body.map((release: any) => release.assets.map((asset: any) => asset.download_count).reduce((a: number, b: number) => a + b, 0)).reduce((a: number, b: number) => a + b, 0))
-  }
+  const downloads = body
+    .map((release: any) => release.assets
+      .map((asset: any) => asset.download_count as number)
+      .reduce((a, b) => a + b, 0)
+    )
+    .reduce((a, b) => a + b, 0)
+
+  ctx.response.body = { downloads }
 });
 
 app.listen({ port: 8000 });
