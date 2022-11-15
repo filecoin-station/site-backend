@@ -14,6 +14,8 @@ app.use(async (ctx: Context) => {
   const body = await res.json()
   const downloads = body
     .map((release: any) => release.assets
+      .filter((asset: any) => !asset.name.endsWith(".yml"))
+      .filter((asset: any) => !asset.name.endsWith(".blockmap"))
       .map((asset: any) => asset.download_count as number)
       .reduce((a, b) => a + b, 0)
     )
