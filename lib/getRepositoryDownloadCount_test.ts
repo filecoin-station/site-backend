@@ -5,5 +5,5 @@ Deno.test("getRepositoryDownloadCount", async () => {
   const downloads = await getRepositoryDownloadCount(
     "filecoin-station/filecoin-station"
   )
-  assert(downloads > 1000)
+  assert(downloads > 500)
 })

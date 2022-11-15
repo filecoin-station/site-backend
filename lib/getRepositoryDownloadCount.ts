@@ -7,6 +7,8 @@ export default async (repo: String, token?: String): Promise<number> => {
   const body = await res.json()
   return body
     .map((release: any) => release.assets
+      .filter((asset: any) => !asset.name.endsWith(".yml"))
+      .filter((asset: any) => !asset.name.endsWith(".blockmap"))
       .map((asset: any) => asset.download_count)
       .reduce((a: number, b: number) => a + b, 0)
     )
