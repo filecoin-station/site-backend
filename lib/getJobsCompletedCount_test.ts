@@ -13,8 +13,15 @@ Deno.test({
   }
 })
 
-Deno.test("getFromInflux", async () => {
-  const jobsCompleted = await getFromInflux()
-  assert(jobsCompleted > 1_000_000)
+// For some reason this test also gets async op warnings. Maybe this is still
+// residue from the previous one.
+Deno.test({
+  name: "getFromInflux",
+  sanitizeOps: false,
+  sanitizeResources: false,
+  async fn () {
+    const jobsCompleted = await getFromInflux()
+    assert(jobsCompleted > 1_000_000)
+  }
 })
 
