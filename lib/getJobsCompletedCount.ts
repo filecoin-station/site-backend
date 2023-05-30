@@ -11,6 +11,7 @@ export default async (): Promise<number> => {
         |> range(start: 0)
         |> filter(fn: (r) => r["_measurement"] == "jobs-completed")
         |> filter(fn: (r) => r["_field"] == "value")
+        |> group()
         |> sum()
     `,
   })
