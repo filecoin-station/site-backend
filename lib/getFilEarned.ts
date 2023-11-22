@@ -42,5 +42,10 @@ export const getFromContract = async (): Promise<bigint> => {
     })
   })
   const { result } = await res.json()
-  return BigInt(result)
+  const balanceHeld = BigInt(result)
+
+  // TODO: Keep this value updated
+  const alreadyPaid = 68657304665804877993n
+
+  return balanceHeld + alreadyPaid
 }
