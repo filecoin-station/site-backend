@@ -1,4 +1,7 @@
+import { assert } from "https://deno.land/std@0.162.0/testing/asserts.ts";
+
 export default async (): Promise<number> => {
+  assert(Deno.env.get("INFLUX_TOKEN"), "$INFLUX_TOKEN required")
   const kv = await Deno.openKv()
   const { value: jobsCompleted } = await kv.get(['jobs-completed'])
   if (jobsCompleted !== null) {
@@ -22,7 +25,7 @@ export const getFromInflux = async (): Promise<number> => {
     headers: {
       "Accept": "application/csv",
       "Content-Type": "application/vnd.flux",
-      "Authorization": `Token 3EzowtsxsDC69eiun1Sffu_KsB-eBMxbYFBR4b_JXnQYEVxW7iPyhL653aZA_A_LMSkUTjz6VnPZu4GkvrI3aQ==`,
+      "Authorization": `Token ${Deno.env.get("INFLUX_TOKEN")}`,
     },
     body: `
       from(bucket: "station")
