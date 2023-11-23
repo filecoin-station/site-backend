@@ -1,25 +1,21 @@
-import { Redis } from "https://deno.land/x/upstash_redis@v1.20.6/mod.ts";
 import { assert } from "https://deno.land/std@0.162.0/testing/asserts.ts";
 
 export default async (): Promise<number> => {
   assert(Deno.env.get("INFLUX_TOKEN"), "$INFLUX_TOKEN required")
-  const redis = new Redis({
-    url: 'https://us1-above-grub-40723.upstash.io',
-    token: 'AZ8TACQgOTI1ODlhYTUtMjhhOS00NzI2LWIyZWYtNDkwMGNhYTUzMTRmMTM0MTM3YWZmNmEyNGI3NmExYjVhZjU1YzM4YTkyZDk=',
-  })
-  const jobsCompleted = await redis.get('jobs-completed')
+  const kv = await Deno.openKv()
+  const { value: jobsCompleted } = await kv.get(['jobs-completed'])
   if (jobsCompleted !== null) {
-    updateCache(redis).catch(console.error)
+    updateCache(kv).catch(console.error)
     return Number(jobsCompleted)
   } else {
-    const jobsCompleted = await updateCache(redis)
+    const jobsCompleted = await updateCache(kv)
     return jobsCompleted
   }
 }
 
-const updateCache = async (redis: Redis): Promise<number> => {
+const updateCache = async (kv: Deno.Kv): Promise<number> => {
   const jobsCompleted = await getFromInflux()
-  await redis.set('jobs-completed', jobsCompleted)
+  await kv.set(['jobs-completed'], jobsCompleted)
   return jobsCompleted
 }
 

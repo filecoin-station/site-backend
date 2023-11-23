@@ -1,16 +1,11 @@
-import { Redis } from "https://deno.land/x/upstash_redis@v1.20.6/mod.ts";
-
 export default async (): Promise<bigint> => {
-  const redis = new Redis({
-    url: 'https://us1-above-grub-40723.upstash.io',
-    token: 'AZ8TACQgOTI1ODlhYTUtMjhhOS00NzI2LWIyZWYtNDkwMGNhYTUzMTRmMTM0MTM3YWZmNmEyNGI3NmExYjVhZjU1YzM4YTkyZDk=',
-  })
-  const filEarned = await redis.get('fil-earned')
+  const kv = await Deno.openKv()
+  const filEarned = await kv.get(['fil-earned'])
   if (typeof filEarned == "string") {
-    updateCache(redis).catch(console.error)
+    updateCache(kv).catch(console.error)
     return BigInt(filEarned)
   } else {
-    const filEarned = await updateCache(redis)
+    const filEarned = await updateCache(kv)
     return filEarned
   }
 }
@@ -19,9 +14,9 @@ export const formatAttoFil = (num: bigint): string => {
   return (num / 10n ** 18n).toString()
 }
 
-const updateCache = async (redis: Redis): Promise<bigint> => {
+const updateCache = async (kv: Deno.Kv): Promise<bigint> => {
   const filEarned = await getFromContract()
-  await redis.set('fil-earned', `0x${filEarned.toString(16)}`)
+  await kv.set(['fil-earned'], `0x${filEarned.toString(16)}`)
   return filEarned
 }
 

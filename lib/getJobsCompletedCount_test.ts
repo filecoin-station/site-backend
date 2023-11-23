@@ -9,7 +9,7 @@ Deno.test({
   sanitizeResources: false,
   async fn () {
     const jobsCompleted = await getJobsCompletedCount()
-    assert(jobsCompleted > 1_000_000)
+    assert(jobsCompleted > 1_000_000, `jobsCompleted: ${jobsCompleted}`)
   }
 })
 
