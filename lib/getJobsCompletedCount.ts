@@ -1,6 +1,8 @@
 import { Redis } from "https://deno.land/x/upstash_redis@v1.20.6/mod.ts";
+import { assert } from "https://deno.land/std@0.162.0/testing/asserts.ts";
 
 export default async (): Promise<number> => {
+  assert(Deno.env.get("INFLUX_TOKEN"), "$INFLUX_TOKEN required")
   const redis = new Redis({
     url: 'https://us1-above-grub-40723.upstash.io',
     token: 'AZ8TACQgOTI1ODlhYTUtMjhhOS00NzI2LWIyZWYtNDkwMGNhYTUzMTRmMTM0MTM3YWZmNmEyNGI3NmExYjVhZjU1YzM4YTkyZDk=',
@@ -27,7 +29,7 @@ export const getFromInflux = async (): Promise<number> => {
     headers: {
       "Accept": "application/csv",
       "Content-Type": "application/vnd.flux",
-      "Authorization": `Token 3EzowtsxsDC69eiun1Sffu_KsB-eBMxbYFBR4b_JXnQYEVxW7iPyhL653aZA_A_LMSkUTjz6VnPZu4GkvrI3aQ==`,
+      "Authorization": `Token ${Deno.env.get("INFLUX_TOKEN")}`,
     },
     body: `
       from(bucket: "station")
