@@ -1,6 +1,6 @@
 export default async (): Promise<bigint> => {
   const kv = await Deno.openKv()
-  const filEarned = await kv.get(['fil-earned'])
+  const { value: filEarned } = await kv.get(['fil-earned'])
   if (typeof filEarned == "string") {
     updateCache(kv).catch(console.error)
     return BigInt(filEarned)
