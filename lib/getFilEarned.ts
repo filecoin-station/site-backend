@@ -1,4 +1,7 @@
+import { assert } from "https://deno.land/std@0.162.0/testing/asserts.ts";
+
 export default async (): Promise<bigint> => {
+  assert(Deno.env.get("GLIF_TOKEN"), "$GLIF_TOKEN required")
   const kv = await Deno.openKv()
   const { value: filEarned } = await kv.get(['fil-earned'])
   if (typeof filEarned == "string") {
@@ -23,6 +26,9 @@ const updateCache = async (kv: Deno.Kv): Promise<bigint> => {
 export const getFromContract = async (): Promise<bigint> => {
   const res = await fetch("https://api.node.glif.io/rpc/v0", {
     method: 'POST',
+    headers: {
+      Authorization: `Bearer ${Deno.env.get("GLIF_TOKEN")}`
+    },
     body: JSON.stringify({
       jsonrpc: "2.0",
       method: "eth_call",

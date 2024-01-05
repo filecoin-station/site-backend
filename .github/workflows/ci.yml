@@ -13,3 +13,4 @@ jobs:
       - run: deno test --allow-net --allow-env --unstable
         env:
           INFLUX_TOKEN: ${{ secrets.INFLUX_TOKEN }}
+          GLIF_TOKEN: ${{ secrets.GLIF_TOKEN }}

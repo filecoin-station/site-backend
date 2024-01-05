@@ -37,5 +37,6 @@ export const getFromInflux = async (): Promise<number> => {
     `,
   })
   const body = await res.text()
+  assert(res.ok, `Bad InfluxDB response: ${res.status} ${res.statusText}`)
   return Number(body.split('\n')[1].split(',')[5])
 }
