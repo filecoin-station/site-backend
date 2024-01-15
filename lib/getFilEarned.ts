@@ -34,7 +34,7 @@ export const getFromContract = async (): Promise<bigint> => {
       method: "eth_call",
       params: [
         {
-          to: "0xaaef78eaf86dcf34f275288752e892424dda9341",
+          to: "0x811765AccE724cD5582984cb35f5dE02d587CA12",
           data: "0x624c6be7"
         },
         "latest"
