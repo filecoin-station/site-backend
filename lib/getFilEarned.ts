@@ -47,6 +47,9 @@ export const getFromContract = async (): Promise<bigint> => {
 
   // TODO: Keep this value updated
   const alreadyPaid = 68657304665804877993n
+    + 388040000000000000000n
+    + 759409999999999934464n
+    + 46382279410000003072n
 
   return balanceHeld + alreadyPaid
 }
