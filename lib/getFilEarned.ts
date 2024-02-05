@@ -34,7 +34,7 @@ export const getFromContract = async (): Promise<bigint> => {
       method: "eth_call",
       params: [
         {
-          to: "0x811765AccE724cD5582984cb35f5dE02d587CA12",
+          to: "0x8460766Edc62B525fc1FA4D628FC79229dC73031",
           data: "0x624c6be7"
         },
         "latest"
@@ -46,10 +46,11 @@ export const getFromContract = async (): Promise<bigint> => {
   const balanceHeld = BigInt(result)
 
   // TODO: Keep this value updated
-  const alreadyPaid = 68657304665804877993n
-    + 388040000000000000000n
-    + 759409999999999934464n
-    + 46382279410000003072n
+  const alreadyPaid = 68657304665804877993n // 11/22/2023
+    + 388040000000000000000n // 12/07/2023
+    + 759409999999999934464n // 01/05/2024
+    + 46382279410000003072n  // 01/11/2024
+    + 686460000000000000000n // 02/01/2024
 
   return balanceHeld + alreadyPaid
 }
