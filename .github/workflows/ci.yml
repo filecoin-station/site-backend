@@ -14,3 +14,4 @@ jobs:
         env:
           INFLUX_TOKEN: ${{ secrets.INFLUX_TOKEN }}
           GLIF_TOKEN: ${{ secrets.GLIF_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
