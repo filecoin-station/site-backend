@@ -5,7 +5,7 @@ export default async (): Promise<number> => {
   const kv = await Deno.openKv()
   const { value: jobsCompleted } = await kv.get(['jobs-completed'])
   if (jobsCompleted !== null) {
-    updateCache(kv).catch(console.error)
+    // updateCache(kv).catch(console.error)
     return Number(jobsCompleted)
   } else {
     const jobsCompleted = await updateCache(kv)
