@@ -1,5 +1,5 @@
 import { assert, assertStrictEquals } from "https://deno.land/std@0.162.0/testing/asserts.ts";
-import getFilEarned, { getFromContract, formatAttoFil} from "./getFilEarned.ts";
+import getFilEarned, { getContractBalanceHeld, formatAttoFil} from "./getFilEarned.ts";
 
 Deno.test({
   name: "getFilEarned",
@@ -12,12 +12,12 @@ Deno.test({
 })
 
 Deno.test({
-  name: "getFromContract",
+  name: "getContractBalanceHeld",
   sanitizeOps: false,
   sanitizeResources: false,
   async fn () {
-    const filEarned = await getFromContract()
-    assert(filEarned > 0n)
+    const balanceHeld = await getContractBalanceHeld()
+    assert(balanceHeld > 0n)
   }
 })
 
