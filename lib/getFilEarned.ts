@@ -63,6 +63,7 @@ export const getFromContract = async (): Promise<bigint> => {
     + 208760000000000000000n // 05/21/2024
     + 120970000000000000000n // 05/27/2024
     + 124380000000000000000n // 06/03/2024
+    + 188030530100000000000n // 06/11/2024
 
 
   return balanceHeld + alreadyPaid
