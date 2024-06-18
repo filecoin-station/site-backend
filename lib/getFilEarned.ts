@@ -47,7 +47,7 @@ type StatsResponse = {
   amount: string;
 }[]
 
-const getTransfersFromStats = async (): Promise<bigint> => {
+export const getTransfersFromStats = async (): Promise<bigint> => {
   const res = await fetch(
     'https://stats.filspark.com/transfers/daily' +
       `?from=2024-01-01&to=${new Date().toISOString().split('T')[0]}`
@@ -56,7 +56,7 @@ const getTransfersFromStats = async (): Promise<bigint> => {
   return stats.reduce((total, stat) => total + BigInt(stat.amount), 0n)
 }
 
-const getContractBalanceHeld = async (): Promise<bigint> => {
+export const getContractBalanceHeld = async (): Promise<bigint> => {
   const res = await fetch("https://api.node.glif.io/rpc/v0", {
     method: 'POST',
     headers: {
