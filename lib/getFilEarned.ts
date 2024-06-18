@@ -75,6 +75,7 @@ export const getContractBalanceHeld = async (): Promise<bigint> => {
       id: 1
     })
   })
+  if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`)
   const { result } = await res.json()
   return BigInt(result)
 }
