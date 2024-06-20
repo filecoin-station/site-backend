@@ -50,7 +50,7 @@ type StatsResponse = {
 export const getTransfersFromStats = async (): Promise<bigint> => {
   const res = await fetch(
     'https://stats.filspark.com/transfers/daily' +
-      `?from=2024-01-01&to=${new Date().toISOString().split('T')[0]}`
+      `?from=2024-06-12&to=${new Date().toISOString().split('T')[0]}`
   )
   const stats = await res.json() as StatsResponse
   return stats.reduce((total, stat) => total + BigInt(stat.amount), 0n)
