@@ -19,6 +19,9 @@ const updateCache = async (kv: Deno.Kv): Promise<number> => {
   return jobsCompleted
 }
 
+const OFFSET = 567_564_171
+const OFFSET_DATE = '2024-03-03T17:14:30.236298505Z'
+
 export const getFromInflux = async (): Promise<number> => {
   const res = await fetch("https://eu-central-1-1.aws.cloud2.influxdata.com/api/v2/query", {
     method: "POST",
@@ -29,7 +32,7 @@ export const getFromInflux = async (): Promise<number> => {
     },
     body: `
       from(bucket: "station")
-        |> range(start: 0)
+        |> range(start: ${OFFSET_DATE})
         |> filter(fn: (r) => r["_measurement"] == "jobs-completed")
         |> filter(fn: (r) => r["_field"] == "value")
         |> group()
@@ -38,5 +41,7 @@ export const getFromInflux = async (): Promise<number> => {
   })
   const body = await res.text()
   assert(res.ok, `Bad InfluxDB response: ${res.status} ${res.statusText}`)
-  return Number(body.split('\n')[1].split(',')[5])
+  return OFFSET + Number(
+    body.split('\n')[1].split(',')[5]
+  )
 }
