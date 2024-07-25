@@ -24,7 +24,7 @@ export const getFromApi = async (): Promise<number> => {
   const res = await fetch(`https://stats.filspark.com/measurements/daily?from=${OFFSET_DATE}`)
   const days = await res.json()
   const total = days.reduce(
-    (acc: number, day: any) => acc + day.accepted_measurement_count,
+    (acc: number, day: any) => acc + day.total_measurement_count,
     0
   )
   console.log('getFromApi() ✔️')
