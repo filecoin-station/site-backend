@@ -23,6 +23,7 @@ Deno.test({
   async fn () {
     const jobsCompleted = await getFromApi()
     assert(jobsCompleted > 1_000_000)
+    assert(jobsCompleted < Number.MAX_SAFE_INTEGER)
   }
 })
 
