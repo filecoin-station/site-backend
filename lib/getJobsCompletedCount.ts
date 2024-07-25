@@ -1,11 +1,8 @@
-import { assert } from "https://deno.land/std@0.162.0/testing/asserts.ts";
-
 export default async (): Promise<number> => {
-  assert(Deno.env.get("INFLUX_TOKEN"), "$INFLUX_TOKEN required")
   const kv = await Deno.openKv()
   const { value: jobsCompleted } = await kv.get(['jobs-completed'])
   if (jobsCompleted !== null) {
-    // updateCache(kv).catch(console.error)
+    updateCache(kv).catch(console.error)
     return Number(jobsCompleted)
   } else {
     const jobsCompleted = await updateCache(kv)
@@ -14,34 +11,21 @@ export default async (): Promise<number> => {
 }
 
 const updateCache = async (kv: Deno.Kv): Promise<number> => {
-  const jobsCompleted = await getFromInflux()
+  const jobsCompleted = await getFromApi()
   await kv.set(['jobs-completed'], jobsCompleted)
   return jobsCompleted
 }
 
-const OFFSET = 567_564_171
-const OFFSET_DATE = '2024-03-03T17:14:30.236298505Z'
+const OFFSET = 155_153_052_475
+const OFFSET_DATE = '2024-07-09'
 
-export const getFromInflux = async (): Promise<number> => {
-  const res = await fetch("https://eu-central-1-1.aws.cloud2.influxdata.com/api/v2/query", {
-    method: "POST",
-    headers: {
-      "Accept": "application/csv",
-      "Content-Type": "application/vnd.flux",
-      "Authorization": `Token ${Deno.env.get("INFLUX_TOKEN")}`,
-    },
-    body: `
-      from(bucket: "station")
-        |> range(start: ${OFFSET_DATE})
-        |> filter(fn: (r) => r["_measurement"] == "jobs-completed")
-        |> filter(fn: (r) => r["_field"] == "value")
-        |> group()
-        |> sum()
-    `,
-  })
-  const body = await res.text()
-  assert(res.ok, `Bad InfluxDB response: ${res.status} ${res.statusText}`)
-  return OFFSET + Number(
-    body.split('\n')[1].split(',')[5]
+export const getFromApi = async (): Promise<number> => {
+  console.log('getFromApi() ...')
+  const res = await fetch(`https://stats.filspark.com/measurements/daily?from=${OFFSET_DATE}`)
+  const days = await res.json()
+  console.log('getFromAPI() ✔️')
+  return days.reduce(
+    (acc: number, day: any) => acc + Number(day.total_measurement_count),
+    OFFSET
   )
 }
