@@ -41,6 +41,7 @@ const historicTransfers = 68657304665804877993n // 11/22/2023
   + 120970000000000000000n // 05/27/2024
   + 124380000000000000000n // 06/03/2024
   + 188030530100000000000n // 06/11/2024
+const voyagerTransfers = 1359540000000000000000n // 09/17/2024
 
 type StatsResponse = {
   day: string;
@@ -85,5 +86,5 @@ export const getFilEarned = async (): Promise<bigint> => {
     getContractBalanceHeld(),
     getTransfersFromStats()
   ])
-  return historicTransfers + transfersFromStats + balanceHeld
+  return historicTransfers + voyagerTransfers + transfersFromStats + balanceHeld
 }
